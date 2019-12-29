@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { UserContext } from "../context/UserContext";
-import { View, Text, TextInput, Button } from "react-native";
+import { View, Text, TextInput, Button, TouchableOpacity } from "react-native";
 import { styles } from "../styles";
 
 const Login = ({ setSignUp }) => {
@@ -34,17 +34,22 @@ const Login = ({ setSignUp }) => {
   return (
     <>
       <View>
-        <Text style={styles.sectionDescription}>Login</Text>
         <TextInput placeholder="Email"
           onChangeText={value => setEmail(value)}
           style={styles.formText}
+          keyboardType="email-address"
+          keyboardAppearance="dark"
         />
         <TextInput placeholder="Password"
           onChangeText={value => setPassword(value)}
           style={styles.formText}
+          keyboardAppearance="dark"
         />
-        <Button title="Login" onPress={() => signin()} disabled={!validateLoginForm()}/>
-        <Button title="Register" onPress={() => {setSignUp(true)}}/>
+        {
+          isLoading ? <TouchableOpacity style={styles.disabledLoginButton} disabled={true}><Text>Logging in...</Text></TouchableOpacity>
+          : <TouchableOpacity style={validateLoginForm() ? styles.loginButton : styles.disabledLoginButton} title="Login" onPress={() => signin()} disabled={!validateLoginForm()}><Text style={{ color: 'white' }}>Login</Text></TouchableOpacity>
+        }
+        <Button title="Sign up here" onPress={() => {setSignUp(true)}}/>
         {renderErrors()}
       </View>
     </>

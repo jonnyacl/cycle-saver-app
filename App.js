@@ -32,7 +32,10 @@ const App = () => {
 
   renderAuth = () => {
     return (
-      <Auth />
+      <View style={styles.login}>
+        <Text style={styles.welcome}>Cycle Saver</Text>
+        <Auth />
+      </View>
     );
   }
 
@@ -40,15 +43,12 @@ const App = () => {
     <UserContext.Provider value={[userState, userDispatch]}>
       {userState.user ? 
         <View style={styles.container}>
-          <Text style={styles.welcome}>CycleSaver</Text>
+          <Text style={styles.welcome}>Cycle Saver</Text>
           <Text style={styles.instructions}>See how much you save by running, walking or cycling to work. (N+1)</Text>
         </View>
         :
         <>
-          <View style={styles.container}>
-            <Text style={styles.welcome}>CycleSaver</Text>
-            {renderAuth()}
-          </View>
+          {renderAuth()}
         </>
       }
     </UserContext.Provider>

@@ -2,6 +2,8 @@
 
 Track your run/walk/commutes from Strava to keep a running tally of how much you are saving and when you can therefore buy your next bike. N+1.
 
+Built using react native and firebase: [React Native Firebase](https://github.com/invertase/react-native-firebase)
+
 ## To run
 
 ```

@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { UserContext } from "../context/UserContext";
-import { View, Text, TextInput, Button } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Button } from "react-native";
 import { styles } from "../styles";
 
 const Signup = ({ setSignUp }) => {
@@ -49,21 +49,27 @@ const Signup = ({ setSignUp }) => {
 
   return (
     <View>
-      <Text style={styles.sectionDescription}>Sign up here</Text>
       <TextInput placeholder="Email"
         onChangeText={value => setEmail(value)}
         style={styles.formText}
+        keyboardType="email-address"
+        keyboardAppearance="dark"
       />
       <TextInput placeholder="Password"
         onChangeText={value => setPassword(value)}
         style={styles.formText}
+        keyboardAppearance="dark"
       />
       <TextInput placeholder="Confirm Password"
         onChangeText={value => setConfirmPassword(value)}
         style={styles.formText}
+        keyboardAppearance="dark"
       />
-      <Button title="Register" onPress={() => register()} disabled={!validateSignupForm()}/>
-      <Button title="Login" onPress={() => {setSignUp(false)}}/>
+      {
+        isLoading ? <TouchableOpacity style={styles.disabledLoginButton} disabled={true}><Text>"Registering..."</Text></TouchableOpacity>
+        : <TouchableOpacity style={validateSignupForm() ? styles.loginButton : styles.disabledLoginButton} onPress={() => register()} disabled={!validateSignupForm()}><Text style={{ color: 'white' }}>Register</Text></TouchableOpacity>
+      }
+      <Button title="Login" onPress={() => {setSignUp(false)}} />
       {renderFormErrors()}
       {renderSignupErrors()}
     </View>
