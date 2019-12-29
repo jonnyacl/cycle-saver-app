@@ -1,5 +1,6 @@
 {
   "name": "CycleSaver",
+  "author": "lea.jonny@gmail.com",
   "version": "6.2.0",
   "private": true,
   "scripts": {
