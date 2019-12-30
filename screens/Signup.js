@@ -1,7 +1,9 @@
 import React, { useState, useContext } from "react";
 import { UserContext } from "../context/UserContext";
-import { View, Text, TextInput, TouchableOpacity, Button } from "react-native";
+import { View, Text, TextInput, Button } from "react-native";
 import { styles } from "../styles";
+import { GoodButton } from "../components/GoodButton";
+import auth from "@react-native-firebase/auth";
 
 const Signup = ({ setSignUp }) => {
 
@@ -14,7 +16,15 @@ const Signup = ({ setSignUp }) => {
 
   const register = () => {
     setIsLoading(true);
-    setIsLoading(false);
+    auth().createUserWithEmailAndPassword(email, password).then(u => {
+        dispatch({ type: "SIGNUP_SUCCESS", user: u });
+        setIsLoading(false);
+    }).catch(e => {
+        console.log(`Failed to sign up ${e}`);
+        setSignupError("Error signing up");
+        dispatch({ type: "SIGNUP_FAIL", user: u });
+        setIsLoading(false);
+    });
   };
 
   const validateSignupForm = () => {
@@ -54,20 +64,31 @@ const Signup = ({ setSignUp }) => {
         style={styles.formText}
         keyboardType="email-address"
         keyboardAppearance="dark"
+        autoCompleteType="email"
       />
       <TextInput placeholder="Password"
         onChangeText={value => setPassword(value)}
         style={styles.formText}
         keyboardAppearance="dark"
+        secureTextEntry={true}
+        autoCompleteType="password"
       />
       <TextInput placeholder="Confirm Password"
         onChangeText={value => setConfirmPassword(value)}
         style={styles.formText}
         keyboardAppearance="dark"
+        secureTextEntry={true}
+        autoCompleteType="password"
       />
       {
-        isLoading ? <TouchableOpacity style={styles.disabledLoginButton} disabled={true}><Text>"Registering..."</Text></TouchableOpacity>
-        : <TouchableOpacity style={validateSignupForm() ? styles.loginButton : styles.disabledLoginButton} onPress={() => register()} disabled={!validateSignupForm()}><Text style={{ color: 'white' }}>Register</Text></TouchableOpacity>
+        isLoading ? <GoodButton style={styles.disabledLoginButton} disabled={true} text="Registering" />
+        : <GoodButton
+            style={validateSignupForm() ? styles.loginButton : styles.disabledLoginButton}
+            onPress={() => register()}
+            disabled={!validateSignupForm()}
+            text="Register"
+            textStyle={{ color: 'white' }}
+        />
       }
       <Button title="Login" onPress={() => {setSignUp(false)}} />
       {renderFormErrors()}

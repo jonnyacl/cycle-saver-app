@@ -8,39 +8,26 @@ export const UserReducer = (state, action) => {
     case "SIGNUP_SUCCESS":
       return {
         ...state,
-        newUser: action.newUser,
-      };
-    case "SIGNUP_FAIL":
-      return {
-        ...state,
-        user: null,
-        newUser: null,
+        user: action.user,
       };
     case "LOGIN_SUCCESS":
       return {
         ...state,
         user: action.user,
-        newUser: null,
       };
     case "CHECK_LOGIN_SUCCESS":
       return {
         ...state,
         user: action.user,
-        newUser: null,
       };
-    case "CHECK_LOGIN_FAIL":
-      return {
-        ...state,
-        user: null,
-        newUser: null,
-      };
+    case "SIGNUP_FAIL":
     case "LOGIN_FAIL":
-      return state;
+    case "CHECK_LOGIN_FAIL":
+    case "LOGOUT_FAIL":
     case "LOGOUT_SUCCESS":
       return {
         ...state,
         user: null,
-        newUser: null,
       };
     default:
       return state;

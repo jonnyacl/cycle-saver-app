@@ -1,7 +1,9 @@
 import React, { useState, useContext } from "react";
 import { UserContext } from "../context/UserContext";
-import { View, Text, TextInput, Button, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, Button } from "react-native";
 import { styles } from "../styles";
+import { GoodButton } from "../components/GoodButton";
+import auth from "@react-native-firebase/auth";
 
 const Login = ({ setSignUp }) => {
   const [userState, dispatch] = useContext(UserContext);
@@ -12,8 +14,19 @@ const Login = ({ setSignUp }) => {
 
   const signin = () => {
     setIsLoading(true);
-    console.log(`Signing in with ${email}`);
-    setIsLoading(false);
+    auth().signInWithEmailAndPassword(email, password).then(u => {
+      setIsLoading(false);
+      dispatch({ type: "LOGIN_SUCCESS", user: u });
+    }).catch(e => {
+      let message = "Incorrect user or password";
+      if (e.message && e.message.includes("invalid-email")) {
+        message = "Invalid email"
+      }
+      setIsLoading(false);
+      setLoginError(message);
+      dispatch({ type: "LOGIN_FAIL" });
+    });
+    
   };
 
   const validateLoginForm = () => {
@@ -39,15 +52,24 @@ const Login = ({ setSignUp }) => {
           style={styles.formText}
           keyboardType="email-address"
           keyboardAppearance="dark"
+          autoCompleteType="email"
         />
         <TextInput placeholder="Password"
           onChangeText={value => setPassword(value)}
           style={styles.formText}
           keyboardAppearance="dark"
+          secureTextEntry={true}
+          autoCompleteType="password"
         />
         {
-          isLoading ? <TouchableOpacity style={styles.disabledLoginButton} disabled={true}><Text>Logging in...</Text></TouchableOpacity>
-          : <TouchableOpacity style={validateLoginForm() ? styles.loginButton : styles.disabledLoginButton} title="Login" onPress={() => signin()} disabled={!validateLoginForm()}><Text style={{ color: 'white' }}>Login</Text></TouchableOpacity>
+          isLoading ? <GoodButton style={styles.disabledLoginButton} disabled={true} text="Logging in..." />
+          : <GoodButton
+              style={validateLoginForm() ? styles.loginButton : styles.disabledLoginButton}
+              text="Login"
+              textStyle={{ color: 'white' }}
+              onPress={() => signin()}
+              disabled={!validateLoginForm()}
+            />
         }
         <Button title="Sign up here" onPress={() => {setSignUp(true)}}/>
         {renderErrors()}
