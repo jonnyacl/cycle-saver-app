@@ -48,29 +48,34 @@ const Login = ({ setSignUp }) => {
     <>
       <View>
         <TextInput placeholder="Email"
-          onChangeText={value => setEmail(value)}
+          onChangeText={value => {
+            setEmail(value);
+            setLoginError("");
+          }}
           style={styles.formText}
           keyboardType="email-address"
           keyboardAppearance="dark"
           autoCompleteType="email"
         />
         <TextInput placeholder="Password"
-          onChangeText={value => setPassword(value)}
+          onChangeText={value => {
+            setPassword(value);
+            setLoginError("");
+          }}
           style={styles.formText}
           keyboardAppearance="dark"
           secureTextEntry={true}
           autoCompleteType="password"
         />
-        {
-          isLoading ? <GoodButton style={styles.disabledLoginButton} disabled={true} text="Logging in..." />
-          : <GoodButton
-              style={validateLoginForm() ? styles.loginButton : styles.disabledLoginButton}
-              text="Login"
-              textStyle={{ color: 'white' }}
-              onPress={() => signin()}
-              disabled={!validateLoginForm()}
-            />
-        }
+        <GoodButton
+          style={(validateLoginForm() && !isLoading) ? styles.loginButton : styles.disabledLoginButton}
+          text="Login"
+          textStyle={{ color: 'white' }}
+          onPress={() => signin()}
+          disabled={!validateLoginForm() || isLoading}
+          isLoading={isLoading}
+          loadingText="Logging in..."
+        />
         <Button title="Sign up here" onPress={() => {setSignUp(true)}}/>
         {renderErrors()}
       </View>

@@ -20,9 +20,16 @@ const App = () => {
   if (!userChecked) {
     // check for logged in user with firebase once
     const signedInUser = auth().currentUser;
-    console.log(`USER: ${JSON.stringify(signedInUser)}`);
     if (signedInUser) {
-      userDispatch({ type: "CHECK_LOGIN_SUCCESS", user: signedInUser });
+      signedInUser.getIdToken().then(idToken => {
+        const user = { details: signedInUser, idToken };
+        console.log(`USER: ${JSON.stringify(user)}`);
+        userDispatch({ type: "CHECK_LOGIN_SUCCESS", user });
+      }).catch(e => {
+        console.log(`Failed to get id token, requests will fail, ${e}`);
+        userDispatch({ type: "CHECK_LOGIN_FAIL" });
+      });
+      
     } else {
       userDispatch({ type: "CHECK_LOGIN_FAIL" });
     }
@@ -46,7 +53,7 @@ const App = () => {
           <View style={styles.container}>
             <Text style={styles.welcome}>Cycle Saver</Text>
             <Text style={styles.instructions}>See how much you save by running, walking or cycling to work. (N+1)</Text>
-            <StravaConnect />
+            <StravaConnect user={userState.user}/>
           </View>
         </>
         :

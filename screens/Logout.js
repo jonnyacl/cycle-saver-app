@@ -23,11 +23,13 @@ export default Logout = () => {
 
     return (
         <GoodButton 
-            text={isLoading ? "Logging out..." : "Logout"}
+            text="logout"
             style={isLoading ? styles.disabledLogoutButton : styles.logoutButton}
             textStyle={{ color: 'white' }} 
             disabled={isLoading}
             onPress={() => {logout()}}
+            isLoading={isLoading}
+            loadingText="Logging out.."
         />
     );
 }
