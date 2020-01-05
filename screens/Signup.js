@@ -22,13 +22,13 @@ const Signup = ({ setSignUp }) => {
     }).catch(e => {
         console.log(`Failed to sign up ${e}`);
         setSignupError("Error signing up");
-        dispatch({ type: "SIGNUP_FAIL", user: u });
+        dispatch({ type: "SIGNUP_FAIL" });
         setIsLoading(false);
     });
   };
 
   const validateSignupForm = () => {
-    return email && email.length > 0 && password && password.length > 0 && confirmPassword && confirmPassword == password;
+    return email && email.length > 0 && password && password.length > 0 && confirmPassword && confirmPassword === password;
   };
 
   const renderSignupErrors = () => {

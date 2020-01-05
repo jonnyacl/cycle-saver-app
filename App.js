@@ -23,7 +23,6 @@ const App = () => {
     if (signedInUser) {
       signedInUser.getIdToken().then(idToken => {
         const user = { details: signedInUser, idToken };
-        console.log(`USER: ${JSON.stringify(user)}`);
         userDispatch({ type: "CHECK_LOGIN_SUCCESS", user });
       }).catch(e => {
         console.log(`Failed to get id token, requests will fail, ${e}`);
@@ -36,7 +35,7 @@ const App = () => {
     setUserChecked(true);
   }
 
-  renderAuth = () => {
+  const renderAuth = () => {
     return (
       <View style={styles.login}>
         <Text style={styles.welcome}>Cycle Saver</Text>

@@ -6,9 +6,10 @@ import axios from 'axios';
 export const StravaConnect = ({ user }) => {
 
     const [isLoading, setIsLoading] = useState(false);
-
     if (__DEV__) {
-      axios.defaults.baseURL = "http://localhost:5000/cycle-saver/us-central1/app/";
+        axios.defaults.baseURL = "http://localhost:5000/cycle-saver/us-central1/app/";
+    } else {
+        axios.defaults.baseURL = "https://us-central1-cycle-saver.cloudfunctions.net/app/";
     }
     axios.defaults.headers["Authorization"] = `Bearer ${user.idToken}`;
     
